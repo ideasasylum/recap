@@ -132,7 +132,6 @@ module Recap
   end
 
   class CLI
-    REPO = "podia/podia"
     LINEAR_BOT_LOGIN = "linear[bot]"
 
     def self.run(args)
@@ -147,6 +146,12 @@ module Recap
       }
       parse_options
       @options[:output] ||= default_output_file
+
+      unless ENV["GITHUB_REPO"]
+        puts "Error: GITHUB_REPO environment variable is required"
+        exit 1
+      end
+
       setup_client
       setup_slack_client if @options[:slack_user]
     end
@@ -340,7 +345,7 @@ module Recap
     def fetch_recent_prs
       days = @options[:range] == :weekly ? 7 : 1
       start_time = (Time.now - (days * 24 * 60 * 60)).iso8601
-      query = "repo:#{REPO} is:pr is:merged merged:>=#{start_time}"
+      query = "repo:#{ENV["GITHUB_REPO"]} is:pr is:merged merged:>=#{start_time}"
       results = @client.search_issues(query)
 
       # Convert to PullRequest objects and sort by merge date
@@ -355,7 +360,7 @@ module Recap
     end
 
     def build_pull_request(pr)
-      full_pr = @client.pull_request(REPO, pr.number)
+      full_pr = @client.pull_request(ENV["GITHUB_REPO"], pr.number)
       linear_details = fetch_linear_details(pr)
 
       # Fetch the author's name from their GitHub profile
@@ -381,7 +386,7 @@ module Recap
     end
 
     def fetch_linear_details(pr)
-      comments = @client.issue_comments(REPO, pr.number)
+      comments = @client.issue_comments(ENV["GITHUB_REPO"], pr.number)
       linear_comment = comments.find { |comment|
         comment.user.login == LINEAR_BOT_LOGIN && comment.user.type == "Bot"
       }
