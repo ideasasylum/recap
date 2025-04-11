@@ -8,17 +8,17 @@ Gem::Specification.new do |spec|
   spec.authors = ["Jamie Lawrence"]
   spec.email = ["jamie@ideasasylum.com"]
 
-  spec.summary = "A tool to summarize GitHub PRs merged in the last week"
-  spec.description = "Recap provides a simple way to get a summary of all Pull Requests merged into a GitHub repository within the last week"
-  spec.homepage = "https://github.com/jamie/recap"
+  spec.summary = "Generate summaries of GitHub pull requests"
+  spec.description = "A Ruby gem that generates concise summaries of GitHub pull requests using AI. Features include daily or weekly digests, Slack integration with threaded messages, and AI-powered summaries via Claude. Perfect for keeping teams updated on code changes."
+  spec.homepage = "https://github.com/ideasasylum/recap"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.0.0"
+  spec.required_ruby_version = ">= 2.6.0"
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/jamie/recap"
-  spec.metadata["changelog_uri"] = "https://github.com/jamie/recap/blob/main/CHANGELOG.md"
+  spec.metadata["source_code_uri"] = "https://github.com/ideasasylum/recap"
+  spec.metadata["changelog_uri"] = "https://github.com/ideasasylum/recap/blob/main/CHANGELOG.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
