@@ -1,34 +1,83 @@
 # Recap
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/recap`. To experiment with that code, run `bin/console` for an interactive prompt.
+A Ruby gem that generates summaries of GitHub pull requests and posts them to Slack. Features include:
+- AI-powered PR summaries using Claude
+- Slack integration with thread support
+- Daily or weekly summaries
+- Markdown output
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+```bash
+gem install recap
+```
 
-Install the gem and add to the application's Gemfile by executing:
+## Configuration
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+Copy `.env.example` to `.env` and set the following environment variables:
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+```bash
+# Required: GitHub repository to fetch PRs from (e.g. "owner/repo")
+GITHUB_REPO=owner/repo
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+# Required: GitHub API token with repo access
+GITHUB_TOKEN=your_github_token_here
+
+# Optional: Claude API key for AI-powered PR summaries
+CLAUDE_API_KEY=your_claude_api_key_here
+
+# Optional: Slack API token for posting messages
+SLACK_API_TOKEN=your_slack_token_here
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+### Command Line
 
-## Development
+```bash
+# Generate daily summary to stdout
+recap
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+# Generate weekly summary
+recap --range weekly
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+# Send daily summary to Slack user
+recap --slack-user "@username"
 
-## Contributing
+# Send weekly summary to Slack channel
+recap --slack-user "#channel" --range weekly
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/recap.
+# Save to specific file
+recap --output prs.md
+```
+
+### Using just
+
+If you have [just](https://github.com/casey/just) installed:
+
+```bash
+# Daily summary to Slack
+just recap-slack-daily "@username"
+just recap-slack-daily "#channel"
+
+# Weekly summary to Slack
+just recap-slack-weekly "@username"
+just recap-slack-weekly "#channel"
+
+# Save to file
+just recap-slack-daily-save "@username"
+just recap-slack-weekly-save "#channel"
+```
+
+## Output Format
+
+- Default format is Markdown
+- Summaries include PR title, author, and description
+- If `CLAUDE_API_KEY` is set, includes AI-generated summary
+- When posting to Slack:
+  - Initial message shows date range
+  - PR details are posted as thread replies
+  - Links are properly formatted for Slack
 
 ## License
 
