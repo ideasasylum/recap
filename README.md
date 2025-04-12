@@ -6,6 +6,9 @@ A Ruby gem that generates summaries of GitHub pull requests and posts them to Sl
 - Daily or weekly summaries
 - Markdown output
 
+> [!NOTE]
+> This repository was almost entirely written by AI so, like, don't expect too much from it.
+
 ## Installation
 
 ```bash
